@@ -1,0 +1,12 @@
+Package: sonar
+Title: Realtime classification of fish in underwater sonar videos
+Version: 0.0.1
+Authors@R: "Ludwig Bothmann <ludwig.bothmann@stat.uni-muenchen.de> [aut, cre]"
+Author: Ludwig Bothmann [aut, cre], Michael Bothmann [ctb]
+Maintainer: Ludwig Bothmann <ludwig.bothmann@stat.uni-muenchen.de>
+Description: Realtime classification of fish in underwater sonar videos.
+Depends: R (>= 2.6.0)
+Imports: hexView, splines, pixmap, cluster, MASS, tree, e1071, parallel, nnet
+License: GPL  (>=2)
+LazyData: true
+RoxygenNote: 5.0.1
