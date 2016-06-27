@@ -1,0 +1,8 @@
+bibentry(bibtype = "article",
+         title = "Realtime classification of fish in underwater sonar videos",
+         author = c(person("Ludwig", "Bothmann"),
+                    person("Michael", "Windmann"),
+                    person("Goeran", "Kauermann")),
+         year = 2016,
+	journal = "Journal of the Royal Statistical Society: Series C (Applied Statistics)",
+doi = "10.1111/rssc.12139",)

@@ -6,6 +6,9 @@
 \usage{
 get.version(file)
 }
+\arguments{
+\item{file}{File name of sonar video (.ddf)}
+}
 \description{
 Nur Version bestimmen und win.start / win.length
 }

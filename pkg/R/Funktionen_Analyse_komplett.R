@@ -26,18 +26,18 @@
 #'
 #' @param my.file Filename of .ddf file to be analyzed
 #' @param win.start Start of the sonar window, possibly extracted before via 
-#'  \code{\link{get.version()}}
+#'  \code{\link{get.version}}
 #' @param win.length Length of the sonar window, possibly extracted before via 
 #'  \code{\link{get.version}}
 #' @param vers Version of the .ddf file, possibly extracted before via 
-#'  \code{\link{get.version()}}
+#'  \code{\link{get.version}}
+#' @param max.frame Total number of frames \code{max.frame} of the given video, 
+#'  possibly extracted before via \code{\link{get.version}} 
 #' @param y.lim Number of pixels to analyze in each beam, counted from the 
 #'  camera
-#' @param max.frame Total number of frames \code{max.frame} of the given video, 
-#'  possibly extracted before via \code{\link{get.version()}} 
 #' @param a.1 Threshold for centered data
 #' @param a.2 Threshold for uncentered data, default \code{0} means that no thresholding is done
-#' @param cut Minimal size of cluster in pixels
+#' @param cut Minimal size of cluster in number of pixels
 #' @param m.d.cs Maximal distance for which two hotspots can be assigned the 
 #'  same tracking number
 #' @param pfad.mult Base folder for resulting plots and output
@@ -51,10 +51,10 @@
 #' @param n.cores Number of cores if parallelization is needed, default is \code{1}
 #' @param df.t Number of degrees of freedom for the splines. Default \code{NULL} 
 #'  results in \code{c(100, 25, round(n.frames/2))} where \code{n.frames} is the 
-#'  total number of frames
+#'  total number of frames of the analyzed video
 #' @param frames.pack Number of frames to be analyzed at once, possibly the 
 #'  total number of frames \code{max.frame} of the given video is 
-#'  extracted before via \code{\link{get.version()}}
+#'  extracted before via \code{\link{get.version}}
 #' @param maxdist Maximal distance of two pixels to be assigned to the same cluster, 
 #'  not relevant for cluster methods floodclust and floodCpp
 #' @param fastclust \code{TRUE}: fastclust method is used for clustering of 
@@ -72,14 +72,14 @@
 #' @param regel.schwarm File name of classification rule for shoal of fish
 #' @param which.regel.schwarm Type of classification rule for shoal of fish, i.e., lda, qda...
 #' @param save.preprocess \code{TRUE}: Results of preprocessing are saved, default is \code{FALSE}
-#' @param zeitstempel time stemp of .ddf file
+#' @param zeitstempel time stamp of .ddf file
 #' @param min.length Minimal length of tracks. Tracks with less hotspots are deleted.
 #' @param fisch Name of fish for plots
 #' @param max.row Maximal number of rows in plot of hotspots
 #' @param center \code{TRUE}: Center variables on hotspot level, default is \code{FALSE}
 #' @param long \code{TRUE}: Average of all hotspot variables are used, default is \code{TRUE}
 #' @param file.regel File name of classification rule
-#' @param klass.regel Type of classification rule for shoal of fish, i.e., lda, qda...
+#' @param klass.regel Type of classification rule for fish species, i.e., lda, qda...
 #' @param sdcorr \code{TRUE}: Standard deviations and correlations of variables 
 #'  on hotspot level are used, default is \code{FALSE}
 #' @param FUN Function for gathering hotspot information on object level, default is \code{mean}
@@ -105,8 +105,8 @@ analyze.ddf <- function(my.file,
                         win.start=0.83, 
                         win.length=5, 
                         vers=3, 
-                        y.lim=512, 
                         max.frame,
+                        y.lim=512, 
                         a.1=18, 
                         a.2=0, 
                         cut=50, 
@@ -366,4 +366,135 @@ analyze.ddf <- function(my.file,
   cat(as.character(Sys.time())," Fischerkennung abgeschlossen \n")
   cat("Fischerkennung abgeschlossen. \n")
   #End
+}
+
+
+####################################################################
+# Die Funktion analyze_ddf() wrapped analyze.ddf damit dort alles englisch ist 
+#   und nur die Parameter aus der Diss/dem Paper übergeben werden müssen/können
+####################################################################
+
+#' Analyze complete .ddf file
+#' 
+#' This function analyzes a given .ddf file, i.e., carries out the entire 
+#'  preprocessing with identification of hotspots, tracking, extraction of 
+#'  features and finally classifies the identified objects.
+#'
+#' @param ddf.file Filename of .ddf file to be analyzed
+#' @param win.start Start of the sonar window, possibly extracted before via 
+#'  \code{\link{get.version}}
+#' @param win.length Length of the sonar window, possibly extracted before via 
+#'  \code{\link{get.version}}
+#' @param vers Version of the .ddf file, possibly extracted before via 
+#'  \code{\link{get.version}}
+#' @param max.frame Total number of frames of the given video, 
+#'  possibly extracted before via \code{\link{get.version}} 
+#' @param y.lim Number of pixels to analyze in each beam, counted from the 
+#'  camera
+#' @param a Threshold for centered data
+#' @param cut Minimal size of clusters in number of pixels. Smaller clusters are 
+#'  deleted before the tracking and hence not considered as hotspots.
+#' @param m.d.cs Maximal distance for which two hotspots can be assigned the 
+#'  same tracking number
+#' @param folder.output Folder for resulting plots and output
+#' @param n.angle Number of watch hands per quarter, i.e., total number of 
+#'  watch hands is \code{4 x n.angle}
+#' @param do.plots \code{TRUE}: Plots of preprocessing are saved, default is \code{FALSE}
+#' @param n.cores Number of cores if parallelization is needed, default is \code{1}
+#' @param frames.pack Number of frames to be analyzed at once, possibly the 
+#'  total number of frames \code{max.frame} of the given video. If \code{frames.pack} is 
+#'    less than \code{max.frame}, the video is splitted in parts of 
+#'    \code{frames.pack} frames and each part is analyzed separately. 
+#' @param df.t Number of degrees of freedom for the splines. Default \code{NULL} 
+#'  results in \code{c(100, 25, round(n.frames/2))} where \code{n.frames} is the 
+#'  total number of frames of the analyzed video, i.e. \code{length(frames.pack)}.
+#' @param save.preprocess \code{TRUE}: Results of preprocessing are saved, 
+#'  default is \code{FALSE}
+#' @param timestamp Time stamp of .ddf file
+#' @param min.length Minimal length of tracks. Tracks with less hotspots are deleted.
+#' @param file.classrule File name of classification rule
+#' @param type.classrule Type of classification rule, i.e., lda, qda...
+#' @param save.movie \code{TRUE}: Video of raw signal and cleaned signal is created, 
+#'  default is \code{TRUE}
+#' @param each Interval of images for the video, for example default \code{5} 
+#'  means, that each \code{5}th image is saved in the video
+#' @param win Specify \code{TRUE} if you are running under windows, then 
+#'  parallelization is not possible
+#' @return As output, a table is generated which lists the found objects with 
+#'  predicted class and computed features at \code{folder.output}.
+#' @export
+#'
+analyze_ddf <- function(ddf.file, 
+                        win.start=0.83, 
+                        win.length=5, 
+                        vers=3, 
+                        max.frame,
+                        y.lim=512, 
+                        a=18, 
+                        cut=50, 
+                        m.d.cs=0.2, 
+                        folder.output, 
+                        n.angle=3, 
+                        do.plots=FALSE, 
+                        n.cores=1, 
+                        frames.pack=600, 
+                        df.t=NULL, 
+                        save.preprocess=FALSE, 
+                        timestamp, 
+                        min.length=10, 
+                        file.classrule, 
+                        type.classrule, 
+                        save.movie=TRUE, 
+                        each=5,
+                        win=FALSE){
+  
+  analyze.ddf(my.file=ddf.file, 
+              win.start=win.start, 
+              win.length=win.length, 
+              vers=vers, 
+              y.lim=y.lim, 
+              max.frame=max.frame,
+              a.1=a, 
+              a.2=0, 
+              cut=cut, 
+              m.d.cs=m.d.cs, 
+              pfad.mult=folder.output, 
+              n.angle=n.angle, 
+              signal.neg=FALSE, 
+              do.plot=do.plots, 
+              do.plot.vec=do.plots, 
+              do.plot.hots=do.plots, 
+              do.plot.hots.vecs=do.plots, 
+              plot.hots.mult=do.plots,
+              n.cores=n.cores, 
+              df.t=df.t, 
+              frames.pack=frames.pack, 
+              maxdist=5, 
+              fastclust=FALSE, 
+              speeditup=FALSE, 
+              floodclust=FALSE, 
+              floodCpp=TRUE,
+              only.watch=TRUE, 
+              schwarm.find=FALSE, 
+              regel.schwarm=NULL, 
+              which.regel.schwarm=NULL, 
+              save.preprocess=save.preprocess, 
+              zeitstempel=timestamp, 
+              min.length=min.length, 
+              fisch="Object", 
+              max.row=50, 
+              center=FALSE, 
+              long=TRUE, 
+              file.regel=file.classrule, 
+              klass.regel=type.classrule, 
+              sdcorr=FALSE, 
+              FUN=mean, 
+              FUN.ow=mean, 
+              save.jpg=TRUE,
+              save.movie=save.movie, 
+              delete.jpg=TRUE,
+              each=each,
+              wait.jpg=FALSE,
+              win=win)
+  
 }

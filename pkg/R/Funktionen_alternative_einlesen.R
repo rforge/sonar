@@ -192,7 +192,7 @@ read.ddf.allframes.new <- function(file,
 }
 
 #' Nur Version bestimmen und win.start / win.length
-#' @export
+#' @param file File name of sonar video (.ddf)
 #' @import hexView
 get.version <- function(file){
 	

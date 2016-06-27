@@ -5,7 +5,7 @@
 \title{Analyze complete .ddf-file}
 \usage{
 analyze.ddf(my.file, win.start = 0.83, win.length = 5, vers = 3,
-  y.lim = 512, max.frame, a.1 = 18, a.2 = 0, cut = 50, m.d.cs = 0.2,
+  max.frame, y.lim = 512, a.1 = 18, a.2 = 0, cut = 50, m.d.cs = 0.2,
   pfad.mult, n.angle = 3, signal.neg = FALSE, do.plot = FALSE,
   do.plot.vec = FALSE, do.plot.hots = FALSE, do.plot.hots.vecs = FALSE,
   plot.hots.mult = FALSE, n.cores = 1, df.t = NULL, frames.pack = 600,
@@ -22,25 +22,25 @@ analyze.ddf(my.file, win.start = 0.83, win.length = 5, vers = 3,
 \item{my.file}{Filename of .ddf file to be analyzed}
 
 \item{win.start}{Start of the sonar window, possibly extracted before via 
-\code{\link{get.version()}}}
+\code{\link{get.version}}}
 
 \item{win.length}{Length of the sonar window, possibly extracted before via 
 \code{\link{get.version}}}
 
 \item{vers}{Version of the .ddf file, possibly extracted before via 
-\code{\link{get.version()}}}
+\code{\link{get.version}}}
+
+\item{max.frame}{Total number of frames \code{max.frame} of the given video, 
+possibly extracted before via \code{\link{get.version}}}
 
 \item{y.lim}{Number of pixels to analyze in each beam, counted from the 
 camera}
-
-\item{max.frame}{Total number of frames \code{max.frame} of the given video, 
-possibly extracted before via \code{\link{get.version()}}}
 
 \item{a.1}{Threshold for centered data}
 
 \item{a.2}{Threshold for uncentered data, default \code{0} means that no thresholding is done}
 
-\item{cut}{Minimal size of cluster in pixels}
+\item{cut}{Minimal size of cluster in number of pixels}
 
 \item{m.d.cs}{Maximal distance for which two hotspots can be assigned the 
 same tracking number}
@@ -65,11 +65,11 @@ same tracking number}
 
 \item{df.t}{Number of degrees of freedom for the splines. Default \code{NULL} 
 results in \code{c(100, 25, round(n.frames/2))} where \code{n.frames} is the 
-total number of frames}
+total number of frames of the analyzed video}
 
 \item{frames.pack}{Number of frames to be analyzed at once, possibly the 
 total number of frames \code{max.frame} of the given video is 
-extracted before via \code{\link{get.version()}}}
+extracted before via \code{\link{get.version}}}
 
 \item{maxdist}{Maximal distance of two pixels to be assigned to the same cluster, 
 not relevant for cluster methods floodclust and floodCpp}
@@ -98,7 +98,7 @@ default is \code{FALSE}}
 
 \item{save.preprocess}{\code{TRUE}: Results of preprocessing are saved, default is \code{FALSE}}
 
-\item{zeitstempel}{time stemp of .ddf file}
+\item{zeitstempel}{time stamp of .ddf file}
 
 \item{min.length}{Minimal length of tracks. Tracks with less hotspots are deleted.}
 
@@ -112,7 +112,7 @@ default is \code{FALSE}}
 
 \item{file.regel}{File name of classification rule}
 
-\item{klass.regel}{Type of classification rule for shoal of fish, i.e., lda, qda...}
+\item{klass.regel}{Type of classification rule for fish species, i.e., lda, qda...}
 
 \item{sdcorr}{\code{TRUE}: Standard deviations and correlations of variables 
 on hotspot level are used, default is \code{FALSE}}
