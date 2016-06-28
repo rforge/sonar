@@ -77,7 +77,7 @@ parallelization is not possible}
 }
 \value{
 As output, a table is generated which lists the found objects with 
- predicted class and computed features at \code{folder.output}
+ predicted class and computed features at \code{folder.output}.
 }
 \description{
 This function analyzes a given .ddf file, i.e., carries out the entire 

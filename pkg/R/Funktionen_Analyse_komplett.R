@@ -422,7 +422,6 @@ analyze.ddf <- function(my.file,
 #'  parallelization is not possible
 #' @return As output, a table is generated which lists the found objects with 
 #'  predicted class and computed features at \code{folder.output}.
-#' @export
 #'
 analyze_ddf <- function(ddf.file, 
                         win.start=0.83, 
