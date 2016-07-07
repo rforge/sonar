@@ -1,18 +1,18 @@
 ###########################################################################
 # Fischprojekt
-# Funktionen zur Erstellung des Outputs am Ende der Fischzählung
+# Funktionen zur Erstellung des Outputs am Ende der Fischzaehlung
 # Datum der ersten Version: 18.07.13
-# Letzte Änderung: 22.11.13
+# Letzte aenderung: 22.11.13
 # Autoren: Ludwig Bothmann & Michael Windmann
 ###########################################################################
 
 
 ####################################################################
 # Die Funktion generate.output() erstellt den Output am Ende der
-#		Fischzählung
+#		Fischzaehlung
 #
-# Übergeben werden muss:
-#	- do.classification:	Wurde etwas gezählt? Sonst Zeile mit Nullen
+# uebergeben werden muss:
+#	- do.classification:	Wurde etwas gezaehlt? Sonst Zeile mit Nullen
 # which.select,
 # pred.class,
 # post.obj,
@@ -29,6 +29,30 @@
 #
 ####################################################################
 
+#' Generate output of fish classification
+#' 
+#' This function generates the output of the entire fish classification
+#' 
+#' @param do.classification \code{TRUE}: Results of classification are available
+#' @param which.select Vector of indices of objects
+#' @param pred.class Predicted classes
+#' @param post.obj Posterior probabilities
+#' @param sum.prepro.roh Summary of the preprocessing, output of 
+#'  \code{\link{summary.func}}
+#' @param frames.pack Number of frames to be analyzed in one package
+#' @param track.eval.out.list Tracking result, output of \code{\link{preprocess.data}}
+#' @param merkmale.out.list Features, output of \code{\link{preprocess.data}}
+#' @param max.frame Total number of frames \code{max.frame} of the given video, 
+#'  possibly extracted before via \code{\link{get.version}} 
+#' @param pfad.mult Folder for resulting plots and output
+#' @param zeitstempel time stamp of .ddf file
+#' @param vars.hot.list Variables on hotspot level, output of \code{\link{preprocess.data}}
+#' @param is.schwarm.vec Vector regarding shoal of fish
+#' @param only.schwarm \code{TRUE}: Only shoal analysis was carried out, 
+#'  default is \code{FALSE}
+#' @return Output table with class of fish and all features is saved at 
+#' \code{pfad.mult}
+#' @export
 generate.output <- function(do.classification,
 														which.select,
 														pred.class,
@@ -48,7 +72,7 @@ generate.output <- function(do.classification,
 														only.schwarm=FALSE
 														){
 	
-	# Nur Schwärme gefunden
+	# Nur Schwaerme gefunden
 	if(only.schwarm){
 		
 		#Filename des Outputs
@@ -118,7 +142,7 @@ generate.output <- function(do.classification,
 				
 		# 		cat(MY.ID)	
 				
-				# Objektnummer in String umwandeln, dann kann über den Zeilennamen
+				# Objektnummer in String umwandeln, dann kann ueber den Zeilennamen
 				#		direkt auf die richtige Zeile in der Outputmatrix 
 				#		zugegriffen werden
 				char.ID <- as.character(MY.ID)
@@ -134,28 +158,28 @@ generate.output <- function(do.classification,
 				# Merkmale
 				merkmale.matrix <- merkmale.out.list[[my.p]]$merkmale.list[my.objectInP]
 				
-				# Mean von Länge und Breite
+				# Mean von Laenge und Breite
 				output[char.ID, c("Laenge","Breite") ] <- apply(merkmale.matrix[[1]][c("Laenge (Dim.y)","Breite (Dim.x)") ,],
 																																		MARGIN=1,
 																																		FUN=mean,
 																																		na.rm=TRUE)
 				
 				# LB: Mean oder Median oder Max?
-				# => 19.11.13 Münster: Mean und Max
+				# => 19.11.13 Muenster: Mean und Max
 				
-				# Max von Länge und Breite
+				# Max von Laenge und Breite
 				output[char.ID, c("max.Laenge","max.Breite") ] <- apply(merkmale.matrix[[1]][c("Laenge (Dim.y)","Breite (Dim.x)") ,],
 																																		MARGIN=1,
 																																		FUN=max,
 																																		na.rm=TRUE)
 				
 				
-				# Fläche
+				# Flaeche
 				output[char.ID, c("Flaeche")] <- mean(merkmale.matrix[[1]][c("Volumen"),],
 																													 na.rm=TRUE)
 				
 				# LB: Lieber das Volumen nehmen? 
-				#		22.11.13: Ab jetzt statt Fläche das Volumen
+				#		22.11.13: Ab jetzt statt Flaeche das Volumen
 				# LB: Mean oder Median oder Max?
 				#		22.11.13: Auch hier beides
 				output[char.ID, c("max.Flaeche")] <- max(merkmale.matrix[[1]][c("Volumen"),],
@@ -166,9 +190,9 @@ generate.output <- function(do.classification,
 				# LB: 22.11.13:
 				#		Komischerweise brauche ich hier ein Minus, damit es zu dem
 				#		passt, was man auf dem Video sieht. Ich erinnere mich noch
-				#		das mit den kartesischen Koordinaten etwas nicht passte, weiß
+				#		das mit den kartesischen Koordinaten etwas nicht passte, weiss
 				#		aber nicht mehr genau, ob ich das jetzt richtig gemacht habe.
-				#		Für die Klassifikation ist es aber egal und jetzt stimmt
+				#		Fuer die Klassifikation ist es aber egal und jetzt stimmt
 				#		dieser Winkel hier auch.
 				
 				
@@ -182,7 +206,7 @@ generate.output <- function(do.classification,
 # 				output[char.ID,"Geschwindigkeit"] <- weg/zeit
 				
 				# LB: Lieber mean.dist nehmen?
-				#		22.11.13: rad.mean, also durchschnittliche zurückgelegte 
+				#		22.11.13: rad.mean, also durchschnittliche zurueckgelegte 
 				#		Strecke zwischen zwei Zeitpunkten MAL 10
 				#		=> Einheit: Meter/Sekunde
 				output[char.ID,"Geschwindigkeit"] <- merkmale.out.list[[my.p]]$dir.vel.list[my.objectInP][[1]]["rad.mean"]*10
@@ -193,7 +217,7 @@ generate.output <- function(do.classification,
 				
 				# LB, 22.11.13: Auch hier brauche ich ein Minus, damit es zum 
 				#		Video passt
-				#	=> So ist das also alles ok. Etwas sauberer wäre es vielleicht,
+				#	=> So ist das also alles ok. Etwas sauberer waere es vielleicht,
 				#		die kartesischen x-Koordinaten in Funktionen_read_plot_ddf.R
 				#		richtig (also mit Minus) zu berechnen, dann muss ich aber auch
 				#		die Klassifikationsregel noch mal neu lernen.
@@ -202,7 +226,7 @@ generate.output <- function(do.classification,
 				# 29.11.13: Wieder atan2, siehe weiter unten
 # 				alpha <- merkmale.out.list[[my.p]]$dir.vel.list[my.objectInP][[1]]["alpha.mean"]
 # 				
-# 				# Vom Bogenmaß in Gradmaß umrechnen und so drehen, dass es der
+# 				# Vom Bogenmass in Gradmass umrechnen und so drehen, dass es der
 # 				#		Winkel zur y-Achse ist und in (-180,180] ist
 # 				alpha.grad <- alpha*180/pi + 90
 # 				if(alpha.grad>180){
@@ -223,13 +247,13 @@ generate.output <- function(do.classification,
 			output[,"Bewegungsrichtung"] <-
 				atan2((-output[,"ersterSPy"]+output[,"letzterSPy"]) , (-output[,"ersterSPx"]+output[,"letzterSPx"])) * (180/pi)
 			
-			# LB: Überprüfen, ob das stimmt
+			# LB: ueberpruefen, ob das stimmt
 			#		=> Vorzeichen vertauscht, jetzt ist es glaube ich richtig
 			#		=> Oder besser alpha.mean? 
 			#				(aus merkmale.out.list[[my.p]]$dir.vel.list[my.objectInP])
 			#		22.11.13: alpha.mean oben reinprogrammiert
-			#		29.11.13: Wieder atan2() benutzen, bei dieser Mitteleung können
-			#			komische Sachen passieren, es ist schöner, wenn die Bewegungs-
+			#		29.11.13: Wieder atan2() benutzen, bei dieser Mitteleung koennen
+			#			komische Sachen passieren, es ist schoener, wenn die Bewegungs-
 			#			richtung zu den angegebenen Punkten passt
 
 				
@@ -253,7 +277,7 @@ generate.output <- function(do.classification,
 			#	(Das gleiche wie max.hots, aber nur Aal und Fisch)
 			n.lebend <- rep(0,max.frame)
 			
-			# Welche Zeilen gehören zu lebenden Objekten?
+			# Welche Zeilen gehoeren zu lebenden Objekten?
 			n.grid <- which(is.element(output[,"Art"],c(1,2)))
 			
 			for(n in n.grid){
@@ -274,7 +298,7 @@ generate.output <- function(do.classification,
 			output <- round(output,4)
 			
 			
-			## output muss noch weitere Leerspalten bekommen für weitere auszugebenden Variablen
+			## output muss noch weitere Leerspalten bekommen fuer weitere auszugebenden Variablen
 			# Filename des Outputs
 			out.filename <- paste(pfad.mult,"output_",zeitstempel,".csv",sep="")
 			

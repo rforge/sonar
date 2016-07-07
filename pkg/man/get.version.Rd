@@ -2,14 +2,21 @@
 % Please edit documentation in R/Funktionen_alternative_einlesen.R
 \name{get.version}
 \alias{get.version}
-\title{Nur Version bestimmen und win.start / win.length}
+\title{Extract meta data from .ddf file}
 \usage{
 get.version(file)
 }
 \arguments{
 \item{file}{File name of sonar video (.ddf)}
 }
+\value{
+List with \code{vers}, the version of the .ddf file format,
+ \code{win.start}, the start point of the sonar window in meters from the lense,
+ \code{win.length}, the length of the sonar window in meters, \code{beams},
+ the number of beams, \code{num_sample}, the number of pixels per beam and
+ \code{n.frames}, the number of frames/images.
+}
 \description{
-Nur Version bestimmen und win.start / win.length
+This function extracts meta information from a given sonar video .ddf file
 }
 

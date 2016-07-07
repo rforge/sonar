@@ -29,8 +29,8 @@ require(hexView)
 
 # 
 # read.ddf.frame <- function(file, i=0){
-#   # Im Prinzip ist es egal ob hier 512 oder 1024 für master_header_length steht, nur die ersten Einträge werden ausgelesen
-#   # wähle min(512,1024)
+#   # Im Prinzip ist es egal ob hier 512 oder 1024 fuer master_header_length steht, nur die ersten Eintraege werden ausgelesen
+#   # waehle min(512,1024)
 #   b<-as.numeric(readRaw(file=my.file, offset=0,nbytes=512,human="int")$fileNum) 
 #   vers<-as.numeric(readRaw(file=my.file, offset=0,nbytes=512,human="int")$fileRaw)[4]
 #   num_beams<-b[5]
@@ -132,7 +132,7 @@ read.ddf.allframes.new <- function(file,
   }
   
   ##############################################################################################
-  #Bestimmen von win.start und win.length abhängig von der Frequenz (hoch oder niedrig)
+  #Bestimmen von win.start und win.length abhaengig von der Frequenz (hoch oder niedrig)
   #Nicht aus master header sondern aus frame header
   a<-readRaw(file=file, offset=master_header_length,nbytes=frame_header_length,human="int")$fileNum
   if(beams == 96){ #higher frequency
@@ -191,8 +191,17 @@ read.ddf.allframes.new <- function(file,
   return(list(all.frames=all.frames, win.start=win.start,win.length=win.length,vers=vers))
 }
 
-#' Nur Version bestimmen und win.start / win.length
+#' Extract meta data from .ddf file
+#' 
+#' This function extracts meta information from a given sonar video .ddf file
+#' 
 #' @param file File name of sonar video (.ddf)
+#' @return List with \code{vers}, the version of the .ddf file format,
+#'  \code{win.start}, the start point of the sonar window in meters from the lense,
+#'  \code{win.length}, the length of the sonar window in meters, \code{beams},
+#'  the number of beams, \code{num_sample}, the number of pixels per beam and
+#'  \code{n.frames}, the number of frames/images.
+#' @export
 #' @import hexView
 get.version <- function(file){
 	
@@ -212,7 +221,7 @@ get.version <- function(file){
 	}
 	
 	##############################################################################################
-	#Bestimmen von win.start und win.length abhängig von der Frequenz (hoch oder niedrig)
+	#Bestimmen von win.start und win.length abhaengig von der Frequenz (hoch oder niedrig)
 	#Nicht aus master header sondern aus frame header
 	a<-readRaw(file=file, offset=master_header_length,nbytes=frame_header_length,human="int")$fileNum
 	if(beams == 96){ #higher frequency
@@ -235,59 +244,3 @@ get.version <- function(file){
 	
 	return(out)
 }
-
-###############
-#Test an Daten#
-###############
-
-# 
-# #Version 3; Silhouetten
-# pfad.basis <- "~/Desktop/Masterarbeit/Daten/" #Daten Pfad festlegen
-# my.file <- paste(pfad.basis,"2012-05-08_200001_HF_Frame_17815-17957.ddf",sep="") 
-# #alle Daten einlesen
-# 
-# #Winkel anpassen? an 48 bzw 96 Beams--> alles automatisiert
-# ddf.data <- read.ddf.allframes.new(my.file,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# 
-# #Version 4; Ludwigs Daten
-# pfad.basis2 <- "~/Desktop/13_03_15_Uebergabe/Aal/"
-# my.file2 <- paste(pfad.basis2,"2012-07-11_003000_HF_Frame_7417-7570.ddf",sep="") 
-# ddf.data <- read.ddf.allframes.new(my.file2,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# 
-# my.file3 <- paste(pfad.basis2,"2012-09-18_220001_HF_Frame_3197-3357.ddf",sep="") 
-# ddf.data <- read.ddf.allframes.new(my.file3,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# 
-# # Treibgut 1
-# my.file <- "../Videos_Daten/2012_09_04_Sticks_LfV/LfV_12_09_1/Treibgut/Treibgut_Laub_01.ddf"
-# ddf.data <- read.ddf.allframes.new(my.file,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# # str(ddf.data)
-# 
-# # Treibgut 2
-# my.file <- "../Videos_Daten/2012_09_04_Sticks_LfV/LfV_12_09_1/Treibgut/Treibgut_Laub_02.ddf"
-# ddf.data <- read.ddf.allframes.new(my.file,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# 
-# # Aal 1
-# my.file <- "../Videos_Daten/2012_03_Erste_Uebergabe/Aale_DDF_und_AVI/Aale.ddf"
-# ddf.data <- read.ddf.allframes.new(my.file,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# # str(ddf.data)
-# 
-# # Aal 2
-# my.file <- "../Videos_Daten/2012_09_04_Sticks_LfV/LfV_12_09_1/Aal_vs_Forelle/Aale.ddf"
-# ddf.data <- read.ddf.allframes.new(my.file,
-# 											  winkel=seq(from=0.15,to=14.25,by=0.3), 
-# 											  frames=NULL)
-# ddf.data$win.start
-# ddf.data$win.length
-# ddf.data$vers

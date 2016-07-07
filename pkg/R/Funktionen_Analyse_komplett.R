@@ -22,7 +22,12 @@
 #
 ####################################################################
 
-#' Analyze complete .ddf-file
+#' Analyze complete .ddf file
+#' 
+#' This function analyzes a given .ddf file, i.e., carries out the entire 
+#'  preprocessing with identification of hotspots, tracking, extraction of 
+#'  features and finally classifies the identified objects. (Extended version
+#'  of \code{\link{analyze_ddf}} where more parameters can be specified.)
 #'
 #' @param my.file Filename of .ddf file to be analyzed
 #' @param win.start Start of the sonar window, possibly extracted before via 
@@ -40,7 +45,7 @@
 #' @param cut Minimal size of cluster in number of pixels
 #' @param m.d.cs Maximal distance for which two hotspots can be assigned the 
 #'  same tracking number
-#' @param pfad.mult Base folder for resulting plots and output
+#' @param pfad.mult Folder for resulting plots and output
 #' @param n.angle Number of watch hands per quarter, i.e., total number of watch hands is \code{4 x n.angle}
 #' @param signal.neg Is the signal negativ? Default is \code{FALSE}
 #' @param do.plot \code{TRUE}: Plots are saved, default is \code{FALSE}
@@ -78,7 +83,7 @@
 #' @param max.row Maximal number of rows in plot of hotspots
 #' @param center \code{TRUE}: Center variables on hotspot level, default is \code{FALSE}
 #' @param long \code{TRUE}: Average of all hotspot variables are used, default is \code{TRUE}
-#' @param file.regel File name of classification rule
+#' @param file.regel File name of classification rule for fish species
 #' @param klass.regel Type of classification rule for fish species, i.e., lda, qda...
 #' @param sdcorr \code{TRUE}: Standard deviations and correlations of variables 
 #'  on hotspot level are used, default is \code{FALSE}
@@ -192,17 +197,6 @@ analyze.ddf <- function(my.file,
   
   cat(as.character(Sys.time())," Preprocessing fertig \n")
   cat("Preprocessing fertig \n")
-  
-  ########################################################################
-  # ACHTUNG: Das ist noch unschoen, fuer das Echtzeit-Warnsystem brauche ich
-  #	hier kein .RData auf die Festplatte legen, das kostet nur Rechenzeit
-  # LB 25.11.13: Erledigt
-  ########################################################################
-  
-  # Ergebnisse laden
-  # LB 25.11.13: Brauche ich nicht mehr, Ergebnisse des Preprocessing
-  #		werden jetzt an das Objekt preprocessed uebergeben
-  # load(file=paste(pfad.mult,"Results_n_angle_",n.angle,"_a2_",a.2,".RData",sep=""))
   
   # Falls nur Schwaerme gefunden wurden
   if(any(preprocessed$is.schwarm.vec)){
@@ -378,7 +372,9 @@ analyze.ddf <- function(my.file,
 #' 
 #' This function analyzes a given .ddf file, i.e., carries out the entire 
 #'  preprocessing with identification of hotspots, tracking, extraction of 
-#'  features and finally classifies the identified objects.
+#'  features and finally classifies the identified objects. (Wrapper function
+#'  of \code{\link{analyze.ddf}} where only parameters discussed in the
+#'  paper/thesis can be specified.)
 #'
 #' @param ddf.file Filename of .ddf file to be analyzed
 #' @param win.start Start of the sonar window, possibly extracted before via 

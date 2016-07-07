@@ -1134,6 +1134,19 @@ track.split.over <- function(track.ddf){
 #
 ####################################################################
 
+#' Evaluate tracking procedure
+#' 
+#' This function evaluates the tracking procedure
+#' 
+#' @param track.evals Tracking output of \code{\link{preprocess.data}}
+#' @param min.length Minimal length of tracks
+#' @param save.plot \code{TRUE} (default): Plots are saved
+#' @param pfad.mult Folder for resulting plots
+#' @param fisch Type of fish (for main of the plots)
+#' @param a.2 Threshold for uncentered data (only for file name)
+#' @return Number of tracks with the minimal number of hotspots and numbers of 
+#'  identified problems
+#' @export
 track.eval.total <- function(track.evals,
 									  min.length,
 									  save.plot=FALSE,

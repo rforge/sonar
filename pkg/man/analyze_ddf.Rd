@@ -82,6 +82,8 @@ As output, a table is generated which lists the found objects with
 \description{
 This function analyzes a given .ddf file, i.e., carries out the entire 
  preprocessing with identification of hotspots, tracking, extraction of 
- features and finally classifies the identified objects.
+ features and finally classifies the identified objects. (Wrapper function
+ of \code{\link{analyze.ddf}} where only parameters discussed in the
+ paper/thesis can be specified.)
 }
 

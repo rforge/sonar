@@ -47,7 +47,76 @@ require(parallel)
 #
 ####################################################################
 
+ 
+#' Preprocess sonar video
+#' 
+#' This function carries out the entire preprocessing of a sonar video, i.e.,
+#' localizes hotspots and tracks objects over time
+#' 
+#' @param my.file Filename of .ddf file to be analyzed
+#' @param win.start Start of the sonar window, possibly extracted before via 
+#'  \code{\link{get.version}}
+#' @param win.length Length of the sonar window, possibly extracted before via 
+#'  \code{\link{get.version}}
+#' @param vers Version of the .ddf file, possibly extracted before via 
+#'  \code{\link{get.version}}
+#' @param y.lim Number of pixels to analyze in each beam, counted from the 
+#'  camera
+#' @param a.1 Threshold for centered data
+#' @param a.2 Threshold for uncentered data, default \code{0} means that no thresholding is done
+#' @param cut Minimal size of cluster in number of pixels
+#' @param c Number of white pixels as frames for the hotspot. Default \code{0} is a 
+#'  good choice
+#' @param m.d.cs Maximal distance for which two hotspots can be assigned the 
+#'  same tracking number
+#' @param pfad.mult Folder for resulting plots and output
+#' @param n.angle Number of watch hands per quarter, i.e., total number of watch hands is \code{4 x n.angle}
+#' @param signal.neg Is the signal negativ? Default is \code{FALSE}
+#' @param do.plot \code{TRUE}: Plots are saved, default is \code{FALSE}
+#' @param do.plot.vec \code{TRUE}: Plots are saved, default is \code{FALSE}
+#' @param n.cores Number of cores if parallelization is needed, default is \code{1}
+#' @param which.packs	Default \code{NULL} results in analysis of the entire 
+#'  video. Alternatively, the indices of packages (per default 100 frames) to
+#'  be analyzed
+#' @param frames.pack Number of frames to be analyzed in one package
+#' @param df.t Number of degrees of freedom for the splines. Default \code{NULL} 
+#'  results in \code{c(100, 25, round(n.frames/2))} where \code{n.frames} is the 
+#'  total number of frames of the analyzed video
+#' @param maxdist Maximal distance of two pixels to be assigned to the same cluster, 
+#'  not relevant for cluster methods floodclust and floodCpp
+#' @param fastclust \code{TRUE}: fastclust method is used for clustering of 
+#'  pixels and definition of hotspots, default is \code{FALSE}
+#' @param speeditup \code{TRUE}: fast version of fastclust method is used for clustering of 
+#'  pixels and definition of hotspots, default is \code{FALSE}
+#' @param floodclust \code{TRUE}: floodclust method is used for clustering of 
+#'  pixels and definition of hotspots, default is \code{FALSE}
+#' @param floodCpp \code{TRUE}: floodCpp method is used for clustering of 
+#'  pixels and definition of hotspots, default is \code{TRUE} - recommended method
+#' @param plot.hots.mult \code{TRUE}: Plots are saved, default is \code{FALSE}
+#' @param only.watch \code{TRUE}: Use watch hands instead of trapezoid variables - 
+#'  strongly recommended, default is \code{TRUE}
+#' @param schwarm.find \code{TRUE}: A detection of shoal of fish is carried out, 
+#'  default is \code{FALSE}
+#' @param regel.schwarm File name of classification rule for shoal of fish
+#' @param which.regel.schwarm Type of classification rule for shoal of fish, i.e., lda, qda...
+#' @param save.preprocess \code{TRUE}: Results of preprocessing are saved, default is \code{FALSE}
+#' @param save.jpg \code{TRUE}: jpgs for the creating of the video are saved, 
+#'  default is \code{TRUE}
+#' @param zeitstempel time stamp of .ddf file
+#' @param save.movie \code{TRUE}: Video is created, 
+#'  default is \code{TRUE}
+#' @param delete.jpg \code{TRUE}: jpgs for the creating of the video are deleted 
+#'  after creating the video, default is \code{TRUE}
+#' @param each Interval of images for the video, for example default \code{5} 
+#'  means, that each 5th image is saved in the video
+#' @param wait.jpg \code{TRUE}: Code pauses until creation of video is finished, 
+#'  default is \code{FALSE}
+#' @param win Specify \code{TRUE} if you are running under windows, then, 
+#'  parallelization is not possible
+#' @return List with various elements necessary for further analysis steps
+#' @export
 #' @import parallel
+#' 
 preprocess.data <- function(my.file,
                             win.start,
                             win.length,
@@ -65,8 +134,8 @@ preprocess.data <- function(my.file,
                             do.plot.vec,
                             n.cores=1,
                             which.packs=NULL,
-                            df.t=NULL,
                             frames.pack=100,
+                            df.t=NULL,
                             maxdist=1,
                             fastclust=FALSE,
                             speeditup=FALSE,
@@ -1227,6 +1296,16 @@ plot.prepro.vec.help <- function(pl.i,
 #
 ###########################################################################
 
+#' Summary of preprocessing
+#' 
+#' @param track.ddf.list Output of \code{\link{preprocess.data}}
+#' @param track.eval.out.list Output of \code{\link{preprocess.data}}
+#' @param merkmale.out.list Output of \code{\link{preprocess.data}}
+#' @param t.grid.list Output of \code{\link{preprocess.data}}
+#' @param n.angle Number of watch hands per quarter, i.e., total number of 
+#'  watch hands is \code{4 x n.angle}
+#' @return Matrix summarizing results of preprocessing for each object
+#' @export
 summary.func <- function(track.ddf.list,
                          track.eval.out.list,
                          merkmale.out.list,
