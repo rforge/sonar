@@ -842,7 +842,62 @@ help.prepro <- function(p,
 #
 ####################################################################
 
-plot.prepro <- function(hot,
+#' Plot results of the preprocessing
+#' 
+#' @param hot \code{TRUE} (default): Hotspots are plotted, else watch hands
+#' @param fisch Species of fish
+#' @param pfad Folder where the plots will be saved
+#' @param sum.prepro Results of \code{\link{summary_func}}
+#' @param min.length Minimal length of tracks
+#' @param cart.coord Cartesian coordinates of all pixel of the sonar window
+#' @param dims.list List with dimensions of hotspots
+#' @param hots.y01.list List with hotspots
+#' @param track.ddf.list List with tracks
+#' @param merkmale.out.list List with features
+#' @param res Resolution of plots (deafault is \code{200})
+#' @param cex Cex for plotting (default is \code{1})
+#' @param filename Filename
+#' @param max.row Maximal number of rows for plots
+#' @param n.cores Number of cores if parallelization is needed, default is \code{1}
+#' @param a.2 Threshold for uncentered data, default \code{0} means that no thresholding is done
+#' @export 
+plot_prepro <- function(hot=TRUE,
+                        fisch,
+                        pfad,
+                        sum.prepro,
+                        min.length,
+                        cart.coord,
+                        hots.y01.list,
+                        dims.list,
+                        track.ddf.list,
+                        merkmale.out.list,
+                        res=200,
+                        cex=1,
+                        filename=NULL,
+                        max.row=50,
+                        n.cores=1,
+                        a.2){
+  
+  plot.prepro(hot=hot,
+              fisch=fisch,
+              pfad=pfad,
+              sum.prepro=sum.prepro,
+              min.length=min.length,
+              cart.coord=cart.coord,
+              hots.y01.list=hots.y01.list,
+              dims.list=dims.list,
+              track.ddf.list=track.ddf.list,
+              merkmale.out.list=merkmale.out.list,
+              res=res,
+              cex=cex,
+              filename=filename,
+              max.row=max.row,
+              n.cores=n.cores,
+              a.2=a.2)
+  
+}
+
+plot.prepro <- function(hot=TRUE,
                         fisch,
                         pfad,
                         sum.prepro,

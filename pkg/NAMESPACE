@@ -3,6 +3,8 @@
 export(analyze.ddf)
 export(generate.output)
 export(get.version)
+export(plot_prepro)
+export(prepare.and.count)
 export(preprocess.data)
 export(summary_func)
 export(track.eval.total)

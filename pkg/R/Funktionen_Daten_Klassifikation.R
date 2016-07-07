@@ -888,6 +888,37 @@ collect.hot.diff <- function(track.ddf.list,
 #
 ####################################################################
 
+#' Prepare data for counting and count
+#' 
+#' This function prepares the output of the previous steps (features...) for
+#' the classification, classifies the objects and counts number of objects
+#' per class
+#' 
+#' @param track.ddf.list Tracking, output of \code{\link{preprocess.data}}
+#' @param track.eval.out.list Tracking evaluation, output of \code{\link{preprocess.data}}
+#' @param merkmale.out.list Features, output of \code{\link{preprocess.data}}
+#' @param t.grid.list Grids of time points, output of \code{\link{preprocess.data}}
+#' @param n.angle Number of watch hands per quarter, i.e., total number of watch hands is \code{4 x n.angle}
+#' @param min.length Minimal length of tracks. Tracks with less hotspots are deleted.
+#' @param center \code{TRUE}: Center variables on hotspot level, default is \code{FALSE}
+#' @param long \code{TRUE}: Average of all hotspot variables are used, default is \code{TRUE}
+#' @param only.watch \code{TRUE}: Use watch hands instead of trapezoid variables - 
+#'  strongly recommended, default is \code{TRUE}
+#' @param file.regel File name of classification rule for fish species
+#' @param klass.regel Type of classification rule for fish species, i.e., lda, qda...
+#' @param sdcorr \code{TRUE}: Standard deviations and correlations of variables 
+#'  on hotspot level are used, default is \code{FALSE}
+#' @param FUN Function for gathering hotspot information on object level, default is \code{mean}
+#' @param FUN.ow Function for gathering hotspot information on object level 
+#'  when not using the trapezoid variables, default is \code{mean}
+#' @param lda.obj Object of learned classification rule if lda is used, is 
+#'  loaded from \code{file.regel}
+#' @param qda.obj Object of learned classification rule if qda is used, is 
+#'  loaded from \code{file.regel}
+#' @param svm.obj Object of learned classification rule if svm is used, is 
+#'  loaded from \code{file.regel}
+#' @return Result of classification
+#' @export
 prepare.and.count <- function(track.ddf.list,
 															track.eval.out.list,
 															merkmale.out.list,
