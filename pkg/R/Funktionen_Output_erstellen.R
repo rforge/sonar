@@ -38,7 +38,7 @@
 #' @param pred.class Predicted classes
 #' @param post.obj Posterior probabilities
 #' @param sum.prepro.roh Summary of the preprocessing, output of 
-#'  \code{\link{summary.func}}
+#'  \code{\link{summary_func}}
 #' @param frames.pack Number of frames to be analyzed in one package
 #' @param track.eval.out.list Tracking result, output of \code{\link{preprocess.data}}
 #' @param merkmale.out.list Features, output of \code{\link{preprocess.data}}

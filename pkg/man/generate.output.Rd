@@ -19,7 +19,7 @@ generate.output(do.classification, which.select, pred.class, post.obj,
 \item{post.obj}{Posterior probabilities}
 
 \item{sum.prepro.roh}{Summary of the preprocessing, output of 
-\code{\link{summary.func}}}
+\code{\link{summary_func}}}
 
 \item{frames.pack}{Number of frames to be analyzed in one package}
 

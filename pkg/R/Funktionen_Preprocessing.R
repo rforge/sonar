@@ -1306,6 +1306,20 @@ plot.prepro.vec.help <- function(pl.i,
 #'  watch hands is \code{4 x n.angle}
 #' @return Matrix summarizing results of preprocessing for each object
 #' @export
+summary_func <- function(track.ddf.list,
+                         track.eval.out.list,
+                         merkmale.out.list,
+                         t.grid.list,
+                         n.angle){
+  
+  summary.func(track.ddf.list=track.ddf.list,
+               track.eval.out.list=track.eval.out.list,
+               merkmale.out.list=merkmale.out.list,
+               t.grid.list=t.grid.list,
+               n.angle=n.angle)
+}
+  
+
 summary.func <- function(track.ddf.list,
                          track.eval.out.list,
                          merkmale.out.list,
