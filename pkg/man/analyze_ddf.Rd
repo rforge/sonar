@@ -7,7 +7,7 @@
 analyze_ddf(ddf.file, win.start = 0.83, win.length = 5, vers = 3,
   max.frame, y.lim = 512, a = 18, cut = 50, m.d.cs = 0.2, folder.output,
   n.angle = 3, do.plots = FALSE, n.cores = 1, frames.pack = 600,
-  df.t = NULL, save.preprocess = FALSE, timestamp, min.length = 10,
+  df.t = NULL, save.preprocess = FALSE, timestamp = "", min.length = 10,
   file.classrule, type.classrule, save.movie = TRUE, each = 5,
   win = FALSE)
 }
